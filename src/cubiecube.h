@@ -3,10 +3,9 @@
 
 #include "corner.h" 
 #include "edge.h"
-#include "remove_arduino_define.h"
 
-#include <string.h>
-#include <stdlib.h>
+#include "arduino_undefine.h"
+
 
 
 namespace kociemba

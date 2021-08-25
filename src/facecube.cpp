@@ -1,10 +1,9 @@
 #include "facecube.h"
 #include "cubiecube.h"
 #include "color.h"
-#include "remove_arduino_define.h"
 
-#include <stdlib.h>
-#include <string.h>
+#include "arduino_undefine.h"
+
 
 namespace kociemba
 {
@@ -23,14 +22,14 @@ namespace kociemba
                 { F, R }, { F, L }, { B, L }, { B, R } };
 
 
-    void get_facecube(facecube_t* res)
+    FLASHMEM void get_facecube(facecube_t* res)
     {
         static const color_t f[54] = { U, U, U, U, U, U, U, U, U, R, R, R, R, R, R, R, R, R, F, F, F, F, F, F, F, F, F, D, D, D, D, D, D, D, D, D, L, L, L, L, L, L, L, L, L, B, B, B, B, B, B, B, B, B };
         memcpy(res->f, f, sizeof(f));
     }
 
 
-    void get_facecube_fromstring(const char* cubeString, facecube_t* res)
+    FLASHMEM void get_facecube_fromstring(const char* cubeString, facecube_t* res)
     {
         for (int i = 0; i < 54; i++)
         {
@@ -58,7 +57,7 @@ namespace kociemba
         }
     }
 
-    void to_String(facecube_t* facecube, char* res)
+    FLASHMEM void to_String(facecube_t* facecube, char* res)
     {
         int i;
         for (i = 0; i < 54; i++)
@@ -85,7 +84,7 @@ namespace kociemba
         res[54] = 0;
     }
 
-    void toCubieCube(facecube_t* facecube, struct cubiecube* ccRet)
+    FLASHMEM void toCubieCube(facecube_t* facecube, struct cubiecube* ccRet)
     {
         int i, j;
         signed char ori;

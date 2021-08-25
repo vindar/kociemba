@@ -5,6 +5,8 @@
 #include "corner.h"
 #include "edge.h"
 
+#include "arduino_undefine.h"
+
 namespace kociemba
 {
 

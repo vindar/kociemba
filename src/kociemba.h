@@ -1,6 +1,6 @@
 #pragma once 
 
-
+#include "arduino_undefine.h"
 
 namespace kociemba
 {

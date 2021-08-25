@@ -1,22 +1,6 @@
 #pragma once
 
-// On teensy, we include the standard Arduino header
-#ifdef TEENSYDUINO
-#include "Arduino.h"
-#include "remove_arduino_define.h"
-#else
-#include <chrono>
-#include <string.h>
-#ifndef PROGMEM
-#define PROGMEM
-#endif
-
-
-#endif
-
-// we ignore PROGMEM directive when running on a regular CPU.
-
-
+#include "arduino_undefine.h"
 
 
 namespace kociemba

@@ -1,6 +1,7 @@
 
 #include "cache_arrays.h"
 
+#include "arduino_undefine.h"
 
 
 namespace kociemba
@@ -80,7 +81,7 @@ namespace kociemba
 
 
 
-	void set_memory(void* mem479 = nullptr, void* mem248 = nullptr)
+	FLASHMEM void set_memory(void* mem479 = nullptr, void* mem248 = nullptr)
 	{
 		if (mem479 != nullptr)
 		{

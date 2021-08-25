@@ -1,12 +1,12 @@
 #include "coordcube.h"
 #include "cubiecube.h"
 
-#include "remove_arduino_define.h"
+#include "arduino_undefine.h"
 
 namespace kociemba
 {
 
-    void get_coordcube(cubiecube_t* cubiecube, coordcube_t* result)
+    FLASHMEM void get_coordcube(cubiecube_t* cubiecube, coordcube_t* result)
     {
         result->twist = getTwist(cubiecube);
         result->flip = getFlip(cubiecube);

@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "remove_arduino_define.h"
+#include "arduino_undefine.h"
 
 
 namespace kociemba

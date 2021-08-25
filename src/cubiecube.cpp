@@ -1,13 +1,14 @@
 #include "cubiecube.h"
 #include "facecube.h"
-#include "remove_arduino_define.h"
+
+#include "arduino_undefine.h"
 
 
 namespace kociemba
 {
 
 
-    cubiecube_t* get_moveCube()
+    FLASHMEM cubiecube_t* get_moveCube()
     {
         static cubiecube_t moveCube[6];
         static int moveCube_initialized = 0;
@@ -66,7 +67,7 @@ namespace kociemba
         return moveCube;
     }
 
-    void get_cubiecube(cubiecube_t* result)
+    FLASHMEM void get_cubiecube(cubiecube_t* result)
     {
         static const corner_t   cp[8] = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB };
         static const signed char       co[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -79,7 +80,7 @@ namespace kociemba
         memcpy(result->eo, eo, sizeof(eo));
     }
 
-    int Cnk(int n, int k) {
+    FLASHMEM int Cnk(int n, int k) {
         int i, j, s;
         if (n < k)
             return 0;
@@ -92,7 +93,7 @@ namespace kociemba
         return s;
     }
 
-    void rotateLeft_corner(corner_t* arr, int l, int r)
+    FLASHMEM void rotateLeft_corner(corner_t* arr, int l, int r)
         // Left rotation of all array elements between l and r
     {
         int i;
@@ -102,7 +103,7 @@ namespace kociemba
         arr[r] = temp;
     }
 
-    void rotateRight_corner(corner_t* arr, int l, int r)
+    FLASHMEM void rotateRight_corner(corner_t* arr, int l, int r)
         // Right rotation of all array elements between l and r
     {
         int i;
@@ -113,7 +114,7 @@ namespace kociemba
     }
 
 
-    void rotateLeft_edge(edge_t* arr, int l, int r)
+    FLASHMEM void rotateLeft_edge(edge_t* arr, int l, int r)
         // Left rotation of all array elements between l and r
     {
         int i;
@@ -123,7 +124,7 @@ namespace kociemba
         arr[r] = temp;
     }
 
-    void rotateRight_edge(edge_t* arr, int l, int r)
+    FLASHMEM void rotateRight_edge(edge_t* arr, int l, int r)
         // Right rotation of all array elements between l and r
     {
         int i;
@@ -133,7 +134,7 @@ namespace kociemba
         arr[l] = temp;
     }
 
-    void toFaceCube(cubiecube_t* cubiecube, facecube_t* fcRet)
+    FLASHMEM void toFaceCube(cubiecube_t* cubiecube, facecube_t* fcRet)
     {
         int i, j, n;
         signed char ori;
@@ -156,7 +157,7 @@ namespace kociemba
         }
     }
 
-    void cornerMultiply(cubiecube_t* cubiecube, cubiecube_t* b)
+    FLASHMEM void cornerMultiply(cubiecube_t* cubiecube, cubiecube_t* b)
     {
         int corn;
         signed char oriA, oriB, ori;
@@ -207,7 +208,7 @@ namespace kociemba
         }
     }
 
-    void edgeMultiply(cubiecube_t* cubiecube, cubiecube_t* b)
+    FLASHMEM void edgeMultiply(cubiecube_t* cubiecube, cubiecube_t* b)
     {
         int edge;
         edge_t ePerm[12] = { (edge_t)0 };
@@ -223,13 +224,13 @@ namespace kociemba
         }
     }
 
-    void multiply(cubiecube_t* cubiecube, cubiecube_t* b)
+    FLASHMEM void multiply(cubiecube_t* cubiecube, cubiecube_t* b)
     {
         cornerMultiply(cubiecube, b);
         edgeMultiply(cubiecube, b);
     }
 
-    void invCubieCube(cubiecube_t* cubiecube, cubiecube_t* c)
+    FLASHMEM void invCubieCube(cubiecube_t* cubiecube, cubiecube_t* c)
     {
         int edge, corn;
         for (edge = 0; edge < EDGE_COUNT; edge++)
@@ -251,7 +252,7 @@ namespace kociemba
         }
     }
 
-    short getTwist(cubiecube_t* cubiecube)
+    FLASHMEM short getTwist(cubiecube_t* cubiecube)
     {
         short ret = 0;
         int i;
@@ -260,7 +261,7 @@ namespace kociemba
         return ret;
     }
 
-    void setTwist(cubiecube_t* cubiecube, short twist)
+    FLASHMEM void setTwist(cubiecube_t* cubiecube, short twist)
     {
         int twistParity = 0;
         int i;
@@ -271,7 +272,7 @@ namespace kociemba
         cubiecube->co[DRB] = (signed char)((3 - twistParity % 3) % 3);
     }
 
-    short getFlip(cubiecube_t* cubiecube)
+    FLASHMEM short getFlip(cubiecube_t* cubiecube)
     {
         int i;
         short ret = 0;
@@ -280,7 +281,7 @@ namespace kociemba
         return ret;
     }
 
-    void setFlip(cubiecube_t* cubiecube, short flip)
+    FLASHMEM void setFlip(cubiecube_t* cubiecube, short flip)
     {
         int i;
         int flipParity = 0;
@@ -291,7 +292,7 @@ namespace kociemba
         cubiecube->eo[BR] = (signed char)((2 - flipParity % 2) % 2);
     }
 
-    short cornerParity(cubiecube_t* cubiecube)
+    FLASHMEM short cornerParity(cubiecube_t* cubiecube)
     {
         int i, j;
         int s = 0;
@@ -302,7 +303,7 @@ namespace kociemba
         return (short)(s % 2);
     }
 
-    short edgeParity(cubiecube_t* cubiecube)
+    FLASHMEM short edgeParity(cubiecube_t* cubiecube)
     {
         int i, j;
         int s = 0;
@@ -313,7 +314,7 @@ namespace kociemba
         return (short)(s % 2);
     }
 
-    short getFRtoBR(cubiecube_t* cubiecube)
+    FLASHMEM short getFRtoBR(cubiecube_t* cubiecube)
     {
         int a = 0, x = 0, j;
         int b = 0;
@@ -337,7 +338,8 @@ namespace kociemba
         }
         return (short)(24 * a + b);
     }
-    void setFRtoBR(cubiecube_t* cubiecube, short idx)
+    
+    FLASHMEM void setFRtoBR(cubiecube_t* cubiecube, short idx)
     {
         int x, j, k, e;
         edge_t sliceEdge[4] = { FR, FL, BL, BR };
@@ -367,7 +369,7 @@ namespace kociemba
                 cubiecube->ep[j] = otherEdge[x++];
     }
 
-    short getURFtoDLF(cubiecube_t* cubiecube)
+    FLASHMEM short getURFtoDLF(cubiecube_t* cubiecube)
     {
         int a = 0, x = 0, j, b = 0;
         corner_t corner6[6] = { (corner_t)0 };
@@ -391,7 +393,7 @@ namespace kociemba
         return (short)(720 * a + b);
     }
 
-    void setURFtoDLF(cubiecube_t* cubiecube, short idx)
+    FLASHMEM void setURFtoDLF(cubiecube_t* cubiecube, short idx)
     {
         int x;
         corner_t corner6[6] = { URF, UFL, ULB, UBR, DFR, DLF };
@@ -421,7 +423,7 @@ namespace kociemba
                 cubiecube->cp[j] = otherCorner[x++];
     }
 
-    int getURtoDF(cubiecube_t* cubiecube)
+    FLASHMEM int getURtoDF(cubiecube_t* cubiecube)
     {
         int a = 0, x = 0;
         int b = 0, j;
@@ -446,7 +448,7 @@ namespace kociemba
         return 720 * a + b;
     }
 
-    void setURtoDF(cubiecube_t* cubiecube, int idx)
+    FLASHMEM void setURtoDF(cubiecube_t* cubiecube, int idx)
     {
         int x, e, j, k;
         edge_t edge6[6] = { UR, UF, UL, UB, DR, DF };
@@ -476,7 +478,7 @@ namespace kociemba
                 cubiecube->ep[j] = otherEdge[x++];
     }
 
-    short getURtoUL(cubiecube_t* cubiecube)
+    FLASHMEM short getURtoUL(cubiecube_t* cubiecube)
     {
         int a = 0, b = 0, x = 0, j;
         edge_t edge3[3] = { (edge_t)0 };
@@ -500,7 +502,7 @@ namespace kociemba
         return (short)(6 * a + b);
     }
 
-    void setURtoUL(cubiecube_t* cubiecube, short idx)
+    FLASHMEM void setURtoUL(cubiecube_t* cubiecube, short idx)
     {
         int x, e, j, k;
         edge_t edge3[3] = { UR, UF, UL };
@@ -525,7 +527,7 @@ namespace kociemba
         }
     }
 
-    short getUBtoDF(cubiecube_t* cubiecube)
+    FLASHMEM short getUBtoDF(cubiecube_t* cubiecube)
     {
         int a = 0, x = 0, b = 0, j;
         edge_t edge3[3] = { (edge_t)0 };
@@ -549,7 +551,7 @@ namespace kociemba
         return (short)(6 * a + b);
     }
 
-    void setUBtoDF(cubiecube_t* cubiecube, short idx)
+    FLASHMEM void setUBtoDF(cubiecube_t* cubiecube, short idx)
     {
         int x, e, j, k;
         edge_t edge3[3] = { UB, DR, DF };
@@ -573,7 +575,7 @@ namespace kociemba
             }
     }
 
-    int getURFtoDLB(cubiecube_t* cubiecube)
+    FLASHMEM int getURFtoDLB(cubiecube_t* cubiecube)
     {
         corner_t perm[8] = { (corner_t)0 };
         int b = 0, i, j;
@@ -591,7 +593,7 @@ namespace kociemba
         return b;
     }
 
-    void setURFtoDLB(cubiecube_t* cubiecube, int idx)
+    FLASHMEM void setURFtoDLB(cubiecube_t* cubiecube, int idx)
     {
         corner_t perm[8] = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB };
         int k, j;
@@ -607,7 +609,7 @@ namespace kociemba
             cubiecube->cp[j] = perm[x--];
     }
 
-    int getURtoBR(cubiecube_t* cubiecube)
+    FLASHMEM int getURtoBR(cubiecube_t* cubiecube)
     {
         edge_t perm[12] = { (edge_t)0 };
         int b = 0, i, j;
@@ -625,7 +627,7 @@ namespace kociemba
         return b;
     }
 
-    void setURtoBR(cubiecube_t* cubiecube, int idx)
+    FLASHMEM void setURtoBR(cubiecube_t* cubiecube, int idx)
     {
         edge_t perm[12] = { UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR };
         int k, j;
@@ -640,7 +642,7 @@ namespace kociemba
             cubiecube->ep[j] = perm[x--];
     }
 
-    int verify(cubiecube_t* cubiecube)
+    FLASHMEM int verify(cubiecube_t* cubiecube)
     {
         int sum = 0, e, i, c;
         int edgeCount[12] = { 0 };
@@ -675,7 +677,7 @@ namespace kociemba
         return 0;// cube ok
     }
 
-    int getURtoDF_standalone(short idx1, short idx2)
+    FLASHMEM int getURtoDF_standalone(short idx1, short idx2)
     {
         int res, i;
 

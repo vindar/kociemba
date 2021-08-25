@@ -3,10 +3,7 @@
 #include "facecube.h"
 #include "coordcube.h"
 
-
-#include <stdlib.h>
-
-#include "remove_arduino_define.h"
+#include "arduino_undefine.h"
 
 
 namespace kociemba
@@ -31,7 +28,7 @@ namespace kociemba
 
 
 
-    const char* solutionToString(search_t* search, int length, int depthPhase1)
+    FLASHMEM const char* solutionToString(search_t* search, int length, int depthPhase1)
     {
         static char s[3 * 32 + 5];
         int cur = 0;
@@ -86,7 +83,7 @@ namespace kociemba
 
     // Apply phase2 of algorithm and return the combined phase1 and phase2 depth. In phase2, only the moves
     // U,D,R2,F2,L2 and B2 are allowed.
-    int totalDepth(search_t* search, int depthPhase1, int maxDepth)
+    FLASHMEM int totalDepth(search_t* search, int depthPhase1, int maxDepth)
     {
         int mv = 0, d1 = 0, d2 = 0, i;
         int maxDepthPhase2 = (10 < maxDepth - depthPhase1) ? 10 : (maxDepth - depthPhase1);// Allow only max 10 moves in phase2
@@ -202,7 +199,7 @@ namespace kociemba
 
 
     template<bool FAST_FLIP, bool  FAST_TWIST>
-    const char* solution_template(const char* facelets, int maxDepth, int timeOut, int useSeparator)
+    FLASHMEM const char* solution_template(const char* facelets, int maxDepth, int timeOut, int useSeparator)
     {
         search_t loc_search;
         search_t* const search = &loc_search;
@@ -277,8 +274,8 @@ namespace kociemba
         busy = 0;
         depthPhase1 = 1;
 
-#ifdef TEENSYDUINO
-        elapsedMillis tse = 0;
+#if defined(TEENSYDUINO) || defined(ESP32)
+        unsigned long start_time = millis();
 #else
         const std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
 #endif
@@ -306,11 +303,11 @@ namespace kociemba
                     do {// increment axis
                         if (++search->ax[n] > 5)
                         {
-
-                            #ifdef TEENSYDUINO
-                            if (tse > (unsigned int)timeOut) return nullptr;
+                            #if defined(TEENSYDUINO) || defined(ESP32)
+                            unsigned long elm = millis() - start_time;
+                            if (elm > (unsigned long)timeOut) return nullptr;
                             #else
-                            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() > timeOut) return "aze";
+                            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() > timeOut) return nullptr;
                             #endif
                             
                             if (n == 0)
@@ -369,7 +366,7 @@ namespace kociemba
 
 
 
-    const char* solve(const char* facelets, int maxDepth, int timeOut, int useSeparator)
+    FLASHMEM const char* solve(const char* facelets, int maxDepth, int timeOut, int useSeparator)
     {
         if (Slice_Flip_Prun_fast == nullptr)
         {
